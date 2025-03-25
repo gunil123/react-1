@@ -12,14 +12,14 @@
   3.git으로 관리하지 않기 때문에 디렉토리 이름이 흐릿하게 나와 있는 것 확인
 
 -public/ : 정적 파일을 저장하는 폴더로, 빌드 시 그대로 유지, 수정X
-    index.html:React 앱이 마운트되는 HTMl파일.<div id="root"></div>가 포함되어 있음.
+    * index.html:React 앱이 마운트되는 HTMl파일.<div id="root"></div>가 포함되어 있음.
 
 -src/: React프로젝트의 주요 위치 코드 디렉토리
-  src/App.js : 메인 component로 필요한 sub component를 모아 관리, 출력을 위해 index.js로 전달
-  src/App.css : App.js에 적용되는 스타일 정의
-    src/index.js : React 앱의 진입 접으로 최종 렌더링이 되는 곳
-  src/index.css : 전역 스타일 정의하는 스타일 파일
--
+  * src/App.js : 메인 component로 필요한 sub component를 모아 관리, 출력을 위해 index.js로 전달
+  * src/App.css : App.js에 적용되는 스타일 정의
+  * src/index.js : React 앱의 진입 접으로 최종 렌더링이 되는 곳
+  * src/index.css : 전역 스타일 정의하는 스타일 파일
+
 + #### 의존성 관리와 package.json
   -package.json은 패키지의 의존성을 관리하는 파일
   -의존성이란, 하나의 소프트웨어가 다른 소프트웨어(라이브러리, 패키지, 모듈 등)에 의존하여 동작하는 관계
@@ -28,7 +28,7 @@
   -협업을 할 때 팀원들 각자 컴퓨터에 같은 패키지들을 설치해서 동일환 개발환경 구성해야 함. 
   -코드는 GitHub 등 Git Server를 이용하지만, node 패키지는 각 팀원들이 설치
 
-  [의존성을 관리하는 이유]
+####  [의존성을 관리하는 이유]
 
   -손쉬운 설치 및  업데이트
   -일관된 개발 환경 유지
