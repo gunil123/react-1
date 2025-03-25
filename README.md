@@ -60,7 +60,7 @@ node module을 다시 설치해야 하는 경우는 다음과 같은 3가지 정
 - component는 작은 기능을 실행할 수 있는 하나의 모듈입니다.
 - 공식 사이트의 홈에는 component가 어떻게 사용되는지 설명하고 있습니다.
 
-###Component를 사용한 유저 인터페이스 생성
+### Component를 사용한 유저 인터페이스 생성
 - React를 사용하면 component라고 하는 개별 조각으로 사용자 인터페이스를 구축할 수 있습니다,
 - Video, Thumbnail 및 LikeButton이라는 react component를 생성해서 조립할 수 있습니다.
 
