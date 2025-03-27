@@ -1,3 +1,9 @@
+.wrapper {
+  diaplay:grid;
+  place-items: center;
+}
+
+
 .App {
   text-align: center;
 }
