@@ -4,6 +4,16 @@
 ### Component의 생성 및 nesting(중첩)
 * component는 
 
+
+- [export default와 export의 차이]
+* Named Exports (export)
+ - 하나의 파일안에 여러 개의 component가 있을 때 사용한다.
+ - component를 사용하는 쪽에서는 component  정확한 이름을 반드시 명시해야 합니다.
+- Ex) import{add, subtract, multiply, divide} from './math'
+* Default Exports (export default)
+ - 하나의 파일안에서 하나의 component만 내보내는 경우
+ - component를 사용하는 쪽에서는 어떤 이름을 사용해도 상관없다.
+
 ## 3월 20일(3주차)
 ## 오늘 배운 내용
 ### React Project 구조 및 역할
