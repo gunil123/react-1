@@ -14,6 +14,17 @@
  - 하나의 파일안에서 하나의 component만 내보내는 경우
  - component를 사용하는 쪽에서는 어떤 이름을 사용해도 상관없다.
 
+### 3.JSX로 마크업 작성하기
+* 앞에서 작성한 코드의 마크업 문법을 JSX라고 함.
+* 반드시 사용해야 하는 것은 아니지만, React 프로젝트에서는 편의성을 위해 JSX를 사용해야 함.
+* JSX는 HTML보다 더욱 엄격한 문법을 적용
+* JSX에서는 <br /> 같이 싱글 태그라도 태그를 닫아야 함.
+* React에서는 여러 개의 component를 JSX태그로 반환할 수 있다.
+* 다만 여러 개의 component를 <div>...</div>또는 빈 <>...</> wrapping해 줘야 함.
+* AboutPage component 작성
+* component를 화면에서 확인하려면? -> App.js를 불러오면 됨.
+
+
 ## 3월 20일(3주차)
 ## 오늘 배운 내용
 ### React Project 구조 및 역할
