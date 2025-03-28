@@ -2,8 +2,11 @@
 
 ## 3월 27일(4주차)
 ### Component의 생성 및 nesting(중첩)
-* component는 
-
+* 먼저 프로젝트 실행 $npm start
+* App.js의 내용 모두 삭제하고 코딩
+* <MyButton /> 호출해서 중첩
+* export default 키워드는 파일내의 component 중 기본 component를 지정
+* 이 키워드의 사용도 JavaScript 문법
 
 - [export default와 export의 차이]
 * Named Exports (export)
@@ -13,6 +16,11 @@
 * Default Exports (export default)
  - 하나의 파일안에서 하나의 component만 내보내는 경우
  - component를 사용하는 쪽에서는 어떤 이름을 사용해도 상관없다.
+
+* 예제 코드에서 MyButton component만 분리
+* ButtonLib라는 component를 새로 만든다.
+* button component 3개 만든다.
+* BUttonLib에 선언한 component를 2개만 App으로 중첩
 
 ### 3.JSX로 마크업 작성하기
 * 앞에서 작성한 코드의 마크업 문법을 JSX라고 함.
@@ -25,14 +33,27 @@
 * component를 화면에서 확인하려면? -> App.js를 불러오면 됨.
 ### 4. 스타일 추가하기
 * React에서는 className으로 CSS 클래스를 지정함.
+* className은 HTML의 class 속성과 동일한 방식으로 동작함.
+* CSS 규칙은 별도의 CSS 파일에 작성, React는 CSS 파일을 추가하는 방법을 규정하지는 않는다.
+* 가장 간단한 방법은 HTML에 태그 추가하는 법 그러나 정적 페이지를 수정해야 하므로 추천하지 않는다.
 ### 5. 데이터 표시하기
-* JSX를 사용하면 자바스크립트에 마크업을 넣을 수 있다.
-- ->
+* 아바타 사진 동그란 모습으로 스타일링
+* JSX 코드 내에서 JavaScript로 탈출하여 변수나 표현식을 사용
+* 이 방법을 Escape Back이라고 함
+* 중괄호를 사용해서 변수나 표현식을 사용자에게 표시
 
-
+* 데이터 중앙에 오게하기
 ### 6. 조건부 렌더링
-### 7. 리스트 렌더링  
 
+* 일반적인 자바스크립트 코드를 작성할 때 사용하는 것과 동일한 방법 사용
+* 일반적인 if-else문, 삼항 연산자, 이항 연산자(&& 연산자/|| 연산자)
+### 7. 리스트 렌더링  
+* 컴포넌트 리스트를 렌더링하기 위해서는 for문 및 map()함수와 같은 자바스크립트 기능 사용
+* <li>에 key 속성이 있는 것 주목
+* 목록을 사용할 때는 각 항목에 대해 고유하게 식별하는 문자열 또는 숫자를 전달
+* 항목을 삽입, 삭제, 재정렬할 때 어떤 일이 일어났는지 알기 위해 key 사용
+* 이것을 key props라고 함.
+* ShoppingList component 작
 ## 3월 20일(3주차)
 ## 오늘 배운 내용
 ### React Project 구조 및 역할
