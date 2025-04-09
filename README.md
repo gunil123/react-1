@@ -1,6 +1,6 @@
 #  박건일 학번:202130115
 
-## 4월 4일(5주차차)
+## 4월 4일(5주차)
 ### 이벤트에 응답하기
 - component 내부에 event handler 함수를 선언하면 event에 응답할 수 있다.
 - onClick={handleClick}의 끝에 소괄호가 없다.
