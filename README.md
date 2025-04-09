@@ -90,8 +90,8 @@
 - 화면 오른쪽에 번호가 있는 목록을 봐야함.
 - 목록에 게임에서 발생한 착수를 모두 기록하며 게임이 진행될 때 동시에 업데이트된다.
 - 먼저 정사각형부터 만들기
-
-```export default function Square() {
+```
+export default function Square() {
   return <button className="square">1</button>;
 }
 ```
