@@ -25,19 +25,6 @@
 - 버튼이 처음 표시될 때는 useState()에 0을 전달했기 때문에 count가 0이 된다.
 - state를 변경하고 싶다면 setCount()를 실행하고 새 값을 전달 이 버튼을 클릭하면 카운터가 증가한다.  
 
-function MyButton() {
-  const [count, setCount] = useState(0);
-
-  function handleClick() {
-    setCount(count + 1);
-  }
-
-  return (
-    <button onClick={handleClick}>
-      Clicked {count} times
-    </button>
-  );
-}
 
 ### Hook 사용하기
 - use로 시작하는 함수가 Hook이라고 한다.
