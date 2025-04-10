@@ -1,9 +1,107 @@
 #  박건일 학번:202130115
 
+## 4월 4일(5주차)
+### 이벤트에 응답하기
+- component 내부에 event handler 함수를 선언하면 event에 응답할 수 있다.
+- onClick={handleClick}의 끝에 소괄호가 없다.
+- 함수를 호출하지 말고 전달만 하면 된다.
+- React는 사용자가 버튼을 클릭할 때 이벤트 핸들러를 호출한다.
+
+
+### 화면 업데이트하기
+- 컴포넌트가 특정 정보를 “기억”하여 표시하기를 원하는 경우가 종종 있다.
+- 예를 들어 버튼이 클릭된 횟수를 세고 싶을 수 있다.
+- 이렇게 하려면 컴포넌트에 state를 추가하면 된다.
+- 먼저, react에서 useState를 import한다.
+- import {useState} from 'react';
+- 이 코드를 보면 usetState는 react 파일 안에 Named Exports로 선언되어 있는 여러 개의 
+  componet 중 하나라는 것을 알 수 있다.
+- 이제 component 내부에 state 변수 선언할 수 있다.
+
+- useState로부터 현재의 state를 저장할 수 있는 변수 count와 이를 업데이트할 수 있는 함수 setCount를 얻을 수 있다.
+- 이들을 어떤 이름으로도 지정할 수 있지만 [something, setSomething]으로 작성하는 것이 일반적이다.
+- 즉, 변수 이름과 변수 이름 앞에 set을 붙인 업데이트 함수를 관용적으로 사용한다.
+
+- 버튼이 처음 표시될 때는 useState()에 0을 전달했기 때문에 count가 0이 된다.
+- state를 변경하고 싶다면 setCount()를 실행하고 새 값을 전달 이 버튼을 클릭하면 카운터가 증가한다.  
+
+
+### Hook 사용하기
+- use로 시작하는 함수가 Hook이라고 한다.
+- useState는 React에서 기본 제공하는 내장 Hook이다.
+- 다른 내장 Hook은 공식 API 참고서에서 찾을 수 있다.
+- 기존 Hook을 조합해서 직접 Hook 만들 수도 있다.
+- Hook은 일반 함수보다 더 제한적이다.
+- component 또는 다른 Hook의 최상단에서만 호출 할 수 있다.
+- 조건문이나 반복문 안에서 useState 쓰고 싶다면 새 컴포넌트를 추출하여 그곳에 넣는다.
+### Hook 사용 규칙
+- React의 렌더링 및 상태 메터니즘과 밀접하게 연결되어 있다.
+- 1. 최상위에서만 호출한다.
+* if, for, while 등의 블록 내에서 호출 안된다.
+* 함수의 조건문 내부에서 호출하면 실행 순서가 달라질 수 있다.
+- 2. React 함수형 component 또는 사용자 Hook 내부에서만 사용 가능하다.
+* 일반적인 JavaScript 함수에서 useState, useEfect 등의 Hook 사용할 수 없다.
+- 왜 이런 제한 필요한가?
+- React의 동작을 예측 가능하고, 안정성 높이기 위해 필요한 규칙
+- 1. 렌더링 순서를 보장하기 위해
+- 2. 불필요한 사이드 이펙트 방지
+### function형 컴포넌트에서만 Hook을 사용할까?
+- class형 component는 lifecycle 함수를 통해서 상태 관리를 했습니다.
+- 그런 이유 때문에 class형 componet는 유지보수가 어렵고 복잡해지 수 있었습니다.
+- React는 component의 상태 관리와 로직을 더 관결하게 만들기 위해 Hooks를 도입 하게 됩니다.
+- 따라서 React 팀은 function형 component를 권장하고 있습니다.
+- Hook은 function형 component 전용으로 설계되었습니다.
+### funtion component vs class component
+- 왜 요즘은 function형 component 사용하냐면 인터넷 자료를 찾다보면 class component를 많이 볼 수 있기 때문이다.
+- React 역사를 살피면 이유를 알 수 있다.
+- 1. React 초창기 (2013년 5월 29일~ 2014년)
+  -함수형 컴포넌트는 존재했지만, 단순히 props를 받아 UI 반환하는 역할만 가능
+  - 상태나 생명주기 기능 없음
+  -그래서 주요 component는 주로 class component 작성
+- 2. React 16.8 (2019년 2월) ->Hooks 도입
+  -useState, useEffect 등의 Hook이 추가, 함수형 component에서도 상태 관리와 생명주기 기능을 구현할 수 있게됨
+- 3. React 17(2020년 10월) 이후
+  -React 17은 주로 내부적인 개선이 많았고, function형 component와 Hooks 사요이 사실상 표준이 됨.
+- 4. React 18(2022년 3월)
+  - 자동 배치 등 function 형 component에서 동작 최적화
+  - .useTrasition, useDeferredValue 같은 새로운 Hook이 추가되면서, class componet에서 funtion component로의 전환이 더욱 가속화됨.
+
+### 컴포넌트 간에 데이터 공유하기
+- 공식 문서에서는 MyButton과 MyApp을 계속 수정해 가면서 설명을 하고 있어서 이전 상태를 확인하기가 어렵습니다.
+- 물론 변경이 있을 때마다 꼼꼼히 commit을 해두면 checkout을 통해서 확인이 가능합니다.
+- 다만 이 경우 checkout을 반복해야 하기 때문에 확인하는데 불편합니다.
+
+- 두 개의 CountState2 component가 동일한 count를 표시하고 함께 업데이트하려면, state를 개별 버튼에서 모든 버튼이 포함된 가장 가까운 component 안으로 이동해야 함함.(App component 제일 가까움)
+### Tutorial에서 학습할 내용
+- 1. Tutorial 환경 설정 : 개발환경에 대한 설명
+- 2. 개요: React의 핵심인 components, props, state에 대해 학습
+- 3. 게임 완료하기 : 가장 많이 사용되는 기술
+- 4. 시간여행 추가하기 : React 만의 강점에 대해 더 깊은 통찰력
+
+### 틱택토 만들기
+### Tutorial에서 학습할 내용
+- 1. Tutorial 환경 설정 : 개발환경에 대한 설명
+- 2. 개요: React의 핵심인 components, props, state에 대해 학습
+- 3. 게임 완료하기 : 가장 많이 사용되는 기술
+- 4. 시간여행 추가하기 : React 만의 강점에 대해 더 깊은 통찰력
+
+- 상호작용할 수 있는 틱택토 게임
+- 틱택토 게임은 두 사람이 번갈아 빈칸에 말을 놓아서 3개의 말을 한 줄로 완성하면 승리한다.
+- 화면 오른쪽에 번호가 있는 목록을 봐야함.
+- 목록에 게임에서 발생한 착수를 모두 기록하며 게임이 진행될 때 동시에 업데이트된다.
+- 먼저 정사각형부터 만들기
+```
+export default function Square() {
+  return <button className="square">1</button>;
+}
+```
 ## 3월 27일(4주차)
 ### Component의 생성 및 nesting(중첩)
-* component는 
-
+* 먼저 프로젝트 실행 $npm start
+* App.js의 내용 모두 삭제하고 코딩
+* <MyButton /> 호출해서 중첩
+* export default 키워드는 파일내의 component 중 기본 component를 지정
+* 이 키워드의 사용도 JavaScript 문법
 
 - [export default와 export의 차이]
 * Named Exports (export)
@@ -13,6 +111,11 @@
 * Default Exports (export default)
  - 하나의 파일안에서 하나의 component만 내보내는 경우
  - component를 사용하는 쪽에서는 어떤 이름을 사용해도 상관없다.
+
+* 예제 코드에서 MyButton component만 분리
+* ButtonLib라는 component를 새로 만든다.
+* button component 3개 만든다.
+* BUttonLib에 선언한 component를 2개만 App으로 중첩
 
 ### 3.JSX로 마크업 작성하기
 * 앞에서 작성한 코드의 마크업 문법을 JSX라고 함.
@@ -25,14 +128,26 @@
 * component를 화면에서 확인하려면? -> App.js를 불러오면 됨.
 ### 4. 스타일 추가하기
 * React에서는 className으로 CSS 클래스를 지정함.
+* className은 HTML의 class 속성과 동일한 방식으로 동작함.
+* CSS 규칙은 별도의 CSS 파일에 작성, React는 CSS 파일을 추가하는 방법을 규정하지는 않는다.
+* 가장 간단한 방법은 HTML에 태그 추가하는 법 그러나 정적 페이지를 수정해야 하므로 추천하지 않는다.
 ### 5. 데이터 표시하기
-* JSX를 사용하면 자바스크립트에 마크업을 넣을 수 있다.
-- ->
+* 아바타 사진 동그란 모습으로 스타일링
+* JSX 코드 내에서 JavaScript로 탈출하여 변수나 표현식을 사용
+* 이 방법을 Escape Back이라고 함
+* 중괄호를 사용해서 변수나 표현식을 사용자에게 표시
 
-
+* 데이터 중앙에 오게하기
 ### 6. 조건부 렌더링
+* 일반적인 자바스크립트 코드를 작성할 때 사용하는 것과 동일한 방법 사용
+* 일반적인 if-else문, 삼항 연산자, 이항 연산자(&& 연산자/|| 연산자)
 ### 7. 리스트 렌더링  
-
+* 컴포넌트 리스트를 렌더링하기 위해서는 for문 및 map()함수와 같은 자바스크립트 기능 사용
+*  li>에 key 속성이 있는 것 주목
+* 목록을 사용할 때는 각 항목에 대해 고유하게 식별하는 문자열 또는 숫자를 전달
+* 항목을 삽입, 삭제, 재정렬할 때 어떤 일이 일어났는지 알기 위해 key 사용
+* 이것을 key props라고 함.
+* ShoppingList component 작
 ## 3월 20일(3주차)
 ## 오늘 배운 내용
 ### React Project 구조 및 역할
