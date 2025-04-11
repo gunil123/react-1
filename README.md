@@ -1,4 +1,159 @@
 #  박건일 학번:202130115
+## 2025-04-10 6주차
+### 틱택토 만들기
+#### props를 통해 데이터 전달하기
+
+- `Square` 컴포넌트를 value prop를 전달 받도록 수정
+```
+function Square() {
+  return <button className="square">1</button>;
+}
+```
+
+2. `Board` 컴포넌트는 JSX로 `<Square />` 9개 렌더링  
+   대문자로 시작해야 사용자 정의 컴포넌트로 인식됨
+
+3. 이렇게 하면 숫자가 다 "1"로 나옴  
+   → 각 칸에 다른 값 넣으려면 `props` 사용해야 함
+
+---
+
+4. `Square`에서 `props.value` 받아서 표시하도록 수정  
+```jsx
+function Square({ value }) {
+  return <button className="square">{value}</button>;
+}
+```
+
+5. `value` 변수로 인식되게 하려면 중괄호 `{}` 필요  
+   → 그냥 `value` 쓰면 문자열 `"value"`로 나옴
+
+   현재는 `Board`에서 value를 안 넘겨줘서 빈 보드로 보임
+
+---
+
+7. `Board`에서 `Square`에 각각 `value` prop 넘겨줌  
+```jsx
+<Square value="1" />
+<Square value="2" />
+...
+```
+
+8. 이제 다시 숫자 있는 보드가 보임  
+→ props를 통해 값 전달, 컴포넌트 재사용 가능해짐
+
+<img src="./images/BoardWithNumber.png" alt="숫자가 있는 보드" width="100" />
+숫자 있는 보드
+
+---
+
+#### 사용자와 상호작용하는 컴포넌트 만들기
+
+- Square를 클릭했을 때 동작 추가하려 함  
+- 먼저 `handleClick` 함수 만들어 `onClick`으로 연결  
+```jsx
+function handleClick() {
+  console.log('clicked!');
+}
+```
+
+- 클릭 시 콘솔에 "clicked!" 뜰 거고, 여러 번 눌러도 콘솔 줄 안 늘고, 숫자만 증가함  
+- 로컬 환경이면 크롬 기준 `Shift + Ctrl + J`로 콘솔 열어야 함
+
+---
+
+- 이제 클릭 상태 기억해서 `"X"` 표시하게 만들 계획  
+- React의 `useState` 훅 사용함  
+```js
+import { useState } from 'react';
+```
+
+- Square 내부에서 state 선언  
+```jsx
+const [value, setValue] = useState(null);
+```
+
+- 더 이상 `props` 안 씀 → `Board`에서 `Square`에 넘기던 `value` prop 삭제
+
+---
+
+- 클릭하면 `value`를 `'X'`로 바꿈  
+```jsx
+function handleClick() {
+  setValue('X');
+}
+```
+
+- 버튼 안에는 `{value}` 그대로 사용. 클릭 시 "X" 표시됨
+
+<img src="./images/BoardWithX.png" alt="X가 있는 보드" width="100" />
+X가 있는 보드   
+
+---
+
+#### React 개발자 도구 
+
+- React 개발자 도구로 컴포넌트의 props, state 확인 가능 [React Developer Tools](https://chromewebstore.google.com/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi)
+
+---
+
+#### 게임 완료하기
+
+##### state 끌어올리기
+
+지금까지는,
+- `Square` 컴포넌트가 각자의 state를 갖고 있어서 한번에 확인하기 어려움
+- 그러므로, state를 Square에서 Board로 끌어올리기
+
+---
+
+1. **`Board` 컴포넌트에서 state 관리
+```js
+const [squares, setSquares] = useState(Array(9).fill(null));
+```
+- 9칸짜리 `squares` 배열로 보드 상태를 관리 (모두 null로 초기화)
+
+---
+
+2. `Square`는 state를 갖지 않고 props로만 동작
+```js
+function Square({ value, onSquareClick }) {
+  return (
+    <button className="square" onClick={onSquareClick}>
+      {value}
+    </button>
+  );
+}
+```
+
+---
+
+3. `Board`에서 Square에 prop으로 값 전달
+```js
+<Square value={squares[0]} onSquareClick={() => handleClick(0)} />
+```
+- `handleClick(i)` 호출을 화살표 함수로 감싸서 클릭 시에만 실행되게 함
+
+---
+
+4. `Board`에서 클릭 처리 함수 정의
+```js
+function handleClick(i) {
+  const nextSquares = squares.slice();
+  nextSquares[i] = "X";
+  setSquares(nextSquares);
+}
+```
+- `slice()`로 복사본 생성 → `X` 추가 → `setSquares()`로 state 업데이트
+
+---
+
+따라서,
+- 모든 사각형의 상태를 하나의 곳(Board)에서 관리
+- React 철학에 맞는 단방향 데이터 흐름 유지
+- 리팩토링이나 디버깅이 쉬워짐
+
+---
 
 ## 4월 4일(5주차)
 ### 이벤트에 응답하기
