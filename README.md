@@ -31,6 +31,13 @@
 - history state를 Game 컴포넌트에 배치하면 자식 Board 컴포넌트에서 squares state를 제거할 수 있음.
 - Square 컴포넌트에서 Board 컴포넌트로 state를 "끌어올렸던" 것처럼, 이제 Board 컴포넌트에서 최상의 Game 컴포넌트로 state를 끌어올릴 수 있음.
 - 이렇게 하면 Game 컴포넌트가 Board 컴포넌트의 데이터를 완전히 제거하고 Board의 history에서 이전 순서를 렌더링하도록 지시할 수 있음.
+### 한번 더 state 끌어올리기
+
+1. 먼저
+2.
+3.
+4.
+5.
 ---
 ## 2025-04-10 6주차
 ### 틱택토 만들기
