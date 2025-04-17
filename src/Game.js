@@ -2,18 +2,30 @@ import {useState} from "react";
 import Square from './Square'
 
 
-export default function Board () {
+export default function Game() {
    const [xIsNext, setXIsNext] = useState(true);
-   const [squares, setSquares] = useState(Array(9).fill(null));
-  
-    function handleClick(i) {
+   const [history, setSquares] = useState(Array(9).fill(null));
+   const currentSquares = history[history.length - 1];
+
+   return (
+    <div className="game">
+      <div className="game-board">
+        <Board />
+      </div>
+      <div className="game-info">
+        <ol>{/*TODO*/}</ol>
+      </div>
+    </div>
+  );
+
+   function handleClick(i) {
     if (squares[i]) {
       return;
     }
     const nextSquares = squares.slice();
     if (xIsNext) {
       nextSquares[i] = "X";
-    } else {
+    } else {  
       nextSquares[i] = "O";
     }
     setSquares(nextSquares);
