@@ -1,4 +1,37 @@
 #  박건일 학번:202130115
+## 2025-04-17 7주차
+### state끌어올리기(6주차 이어서)
+### 우승자 선언
+### 승자 결정하기
+```
+  function calculateWinner(squares) {
+    const lines = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6]
+    ];
+    for (let i = 0; i < lines.length; i++) {
+      const [a, b, c] = lines[i];
+      if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+        return squares[a];
+      }
+    }
+    return null;
+  }
+```
+### 한번 더 state 끌어올리기
+
+- 이제 과거 플레이 목록을 표시하기 위해 새로운 최상의 컴포넌트 Game을 작성.
+- 여기에 전체 게임 기록을 포함하는 history state를 배치.
+- history state를 Game 컴포넌트에 배치하면 자식 Board 컴포넌트에서 squares state를 제거할 수 있음.
+- Square 컴포넌트에서 Board 컴포넌트로 state를 "끌어올렸던" 것처럼, 이제 Board 컴포넌트에서 최상의 Game 컴포넌트로 state를 끌어올릴 수 있음.
+- 이렇게 하면 Game 컴포넌트가 Board 컴포넌트의 데이터를 완전히 제거하고 Board의 history에서 이전 순서를 렌더링하도록 지시할 수 있음.
+---
 ## 2025-04-10 6주차
 ### 틱택토 만들기
 #### props를 통해 데이터 전달하기

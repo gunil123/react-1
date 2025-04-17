@@ -1,5 +1,3 @@
-import {useState} from "react";
-
 export default function Square({value, onSquareClick}) {
   return (
     <div>
@@ -7,5 +5,5 @@ export default function Square({value, onSquareClick}) {
       {value}
       </button>
     </div>
-      );
+      )
 }
