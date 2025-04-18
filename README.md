@@ -72,7 +72,7 @@ export default function Game() {
 - React Fragment(>...</>)로 감싸거나, 만 남겨 주세요.
 - React Fragment를 사용하면 구조도 깔끔하고, 유지 보수도 편합니다.
 - 우리가 사용하는 튜토리얼에서는 버튼들을 float 스타일로 정렬하고 있습니다.
-- ///<div>지우기
+- ```<div>```지우기
 ### 과거 움직임 보여주기
 - JavaScript에서 한 배열을 다른 배열로 변환하려면 배열 map 메서드를 사용하면 됩니다.
 1. 플레이 history 배열을 화면의 버튼을 나타내는 React 엘리먼트로 변환합니다.
