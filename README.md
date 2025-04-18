@@ -1,17 +1,253 @@
 #  박건일 학번:202130115
 ## 2025-04-18(보강)
+### 한 번 더 state 끌어올리기
+- 다음 플레이어와 플레이 기록을 추적하기 위해 Game 컴포넌트에 몇 개의 state를 추가하세요.
+```
+export default function Game() {
+const [xIsNext, setxIsNext] - useState(true);
+const [history, setHistory] - usestate([Array(9).fill(null)]);
+```
+- 현재 플레이에 대한 square을 렌더링하려면 history에서 마지막 squares의 배열을 읽어야 합니다.
+- 렌더링 중에 계산할 수 있는 충분한 정보가 이미 있으므로 usestate는 필요하지 않습니다.
+```
+export default function Game() {
+const [xIsNext, setXIsNext]-useState(true);
+const [history, setHistory]-usestate([Array(1).fill(null)]);
+const currentsquares - history[history.length - 1];
+// ...
+```
+- 다음으로 Game 컴포넌트 안의 Board 컴포넌트가 게임을 업데이트할 때 호출할 handlePlay 함수를 만드세요.
+- xIsNext, currentSquares, handlePlay 를 Board 컴포넌트에 | props로 전달하세요.
+```
+ function handlePlay (nextSquares) {
+    // TODO
+  }
+  return (
+    <div className="game">
+      <div className="game-board">
+        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+        // ...
+  )
+```
+---
+- Board 컴포넌트가 props에 의해 완전히 제어되도록 만들겠습니다.
+- Board 컴포넌트가 xIsNext, squares, onPlay 함수를 props로 받을 수 있도록 변경합니다. - onPlay는 Board가 - 업데이트된 squares를 배열로 호출할 수 있는 새로운 함수입니다.
+- 다음으로 Board 함수에서 useState를 호출하는 처음 두 줄을 제거하세요.
+```
+function Board({ xIsNext, squares, onPlay }) {
+  function handleClick(i) {
+    //...
+  }
+  // ...
+}
+```
+- 이제 Board 컴포넌트의 handleClick에 있는 setSquares 및 setXIsNext 호출을 새로운 onPlay 함수에 대한 단일   호출로 대체함으로써 사용자가 사각형을 클릭할 때 Game 컴포넌트가 Board를 업데이트할 수 있습니다.
+```
+ if (xIsNext) {
+      nextSquares[i] = "X";
+    } else {
+      nextSquares[i] = "O";
+    }
+    onPlay(nextSquares);
+```
+- Board 컴포넌트는 Game 컴포넌트가 전달한 props에 의해 완전히 제어됩니다.
+- 게임이 다시 작동하게 하려면 Game 컴포넌트에서 handlePlay 함수를 구현해야 합니다.
+- handlePlay가 호출되면 무엇을 해야 할까요?
+-  이전의 Board는 업데이트된 setSquares를 호출했지만, 이제는 업데이트된 squares 배열을 onPlay로 전달한다는 걸 기억하세요.
+- handlePlay 함수는 리렌더링을 트리거하기 위해 Game의 state를 업데이트해야 하지만, 더 이상 호출할 수 있는 setSquares 함수가 없습니다.
+- 대신 이 정보를 저장하기 위해 history state 변수를 사용하고 있습니다.
+업데이트된 squares 배열을 새 히스토리 항목으로 추가하여 history를 업데이트해야 하고, Board에서 했던 것처럼 xIsNext 값을 반전시켜야 합니다.
+```
+export default function Game() {
+  //...
+  function handlePlay(nextSquares) {
+    setHistory([...history, nextSquares]);
+    setXIsNext(!xIsNext);
+  }
+  //...
+}
+```
+### 화면 한 줄로 깨져서 보이는 이유
+- 화면이 다음과 같이 한 줄로 깨져서 보이는 경우가 있습니다.
+- React Fragment(>...</>)로 감싸거나, 만 남겨 주세요.
+- React Fragment를 사용하면 구조도 깔끔하고, 유지 보수도 편합니다.
+- 우리가 사용하는 튜토리얼에서는 버튼들을 float 스타일로 정렬하고 있습니다.
+- <div>지우기
 ### 과거 움직임 보여주기
+- JavaScript에서 한 배열을 다른 배열로 변환하려면 배열 map 메서드를 사용하면 됩니다.
+1. 플레이 history 배열을 화면의 버튼을 나타내는 React 엘리먼트로 변환합니다.
+2. 과거의 플레이로 "점프할 수 있는 버튼 목록을 표시하세요.
+3. 이 것을 구현하기 위해서 Game 컴포넌트에서 history를 map을 이용해보겠습니다.
+```
+ function jumpTo(nextMove) {
+    // TODO
+  }
+
+  const moves = history.map((squares, move) => {
+    let description;
+    if (move > 0) {
+      description = 'Go to move #' + move;
+    } else {
+      description = 'Go to game start';
+    }
+    return (
+      <li>
+        <button onClick={() => jumpTo(move)}>{description}</button>
+      </li>
+    );
+  });
+
+   return (
+    <div className="game">
+      <div className="game-board">
+        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+      </div>
+      <div className="game-info">
+        <ol>{moves}</ol>
+      </div>
+    </div>
+  );
+}
+```
+```
+export default function Game() {
+  const [xIsNext, setXIsNext] = useState(true);
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const currentSquares = history[history.length - 1];
+
+  function handlePlay(nextSquares) {
+    setHistory([...history, nextSquares]);
+    setXIsNext(!xIsNext);
+  }
+
+  function jumpTo(nextMove) {
+    // TODO
+  }
+}
+```
+- 경고: 배열 또는 반목자의 각 자식 요소는 고유한 "key" 속성을 가져야 합니다. 'Game'의 렌더 메서드를 확인하세요.
+---
 ### map함수의 사용
+1. history.map: history는 모든 플레이를 저장하는 배열입니다. 이 history에 map 함수를 적용 한다는 의미 입니다.
+2. map 함수는 history 각각의 요소 index를 순회하면서 squares 추출합니다.
+3. 각 요소는 { }안의 실행문을 실행하면서 버튼을 생성합니다.
+4. 이렇게 생성된 버튼은 moves 객체(배열)에 다시 저장됩니다.
+5. move는 최종 rendering에 사용됩니다.
+- 원본 배열 (history): map이 호출된 원본 배열.
+- 원본 배열의 인덱스 (move): 현재 순환 중인 원본 배열 요소의 인덱스.
+- 요소 값 (squares): 현재 순회 중인 요소 배열의 값.
+- 각각의 history 요소에 대한 { }의 실행문(후작업) 실행합니다.
+- moves 객체에 저장합니다.
+- 최종 출력에 사용합니다.
+---
 ### key 선택하기
 - 리스트를 렌더링할 때 react는 렌더링 된 각 리스트 항목에 대한 몇가지 정보 제공
+- 리스트를 업데이트할 때 React는 무엇이 변경되었는지 확인해야 합니다.
+- 리스트의 항목은 추가, 제거, 재정렬 또는 업데이트될 수 있습니다.
+- 리스트의 항목에 key 프로퍼티를 지정하여 각 리스트의 항목이 다른 항목과 다르다는 것을 구별해 주어야 합니다.
+
+- 만약 데이터베이스에서 데이터를 불러와서 사용한다면 Alexa, Ben, Claudia의 데이터베이스 ID 를 key로 사용할 수 있습니다.
+- 리스트가 다시 렌더링 되면 React는 각 리스트 항목의 key를 가져와서 이전 리스트의 항목에서 일치하는 key를 탐색합니다.
+- 현재 리스트에서 이전에 존재하지 않았던 key가 있으면 React는 컴포넌트를 생성합니다.
+- 만약 현재 리스트에 이전 리스트에 존재했던 key를 가지고 있지 않다면 React는 그 key를 가진 컴포넌트를 제거합니다.
+- 두 key가 일치한다면 해당 컴포넌트는 이동합니다.
+- key는 각 React가 각 컴포넌트를 구별할 수 있도록 하여, 컴포넌트가 다시 렌더링 될 때 React 가 해당 컴포넌트의 state를 유지할 수 있게 합니다.
+- 컴포넌트의 key가 변하면 컴포넌트는 제거되고 새로운 state와 함께 다시 생성됩니다.
+---
+- key는 React에서 특별하게 미리 지정된 프로퍼티입니다.
+- 엘리먼트가 생성되면 React는 key 프로퍼티를 추출하여 반환되는 엘리먼트에 직접 key를 저장합니다.
+- key가 props로 전달되는 것처럼 보일 수 있지만, React는 자동으로 key를 사용해 업데이트할 컴포넌트를 결정합니다.
+- 부모가 지정한 key가 무엇인지 컴포넌트는 알 수 없습니다.
+- 동적인 리스트를 만들 때마다 적절한 key를 할당하는 것을 강력하게 추천합니다.
+- 적절한 key가 없는 경우 데이터의 재구성을 고려해 보세요.
+- key가 지정되지 않은 경우, React는 경고를 표시하며 배열의 인덱스를 기본 key로 사용합니다.
+- 배열 인덱스를 key로 사용하면 리스트 항목의 순서를 바꾸거나 항목을 추가/제거할 때 문제가 발생합니다.
+- 명시적으로 key={i}를 전달하면 경고는 사라지지만 배열의 인덱스를 사용할 때와 같은 문제가 발생하므로 대부분은 추천하지 않습니다.
+- key는 전역적으로 고유할 필요는 없으며, 컴포넌트와 해당 컴포너늩의 형제 컴포넌트 사이에서만 고유하면 됩니다.
+---
 ### 시간여행 구현하기 -1
+- 틱택토 게임의 기록에서 과거의 각 플레이에는 해당 플레이의 일련번호인 고유 ID가 있습니다.
+- 플레이는 중간에 순서를 바꾸거나 삭제하거나 삽입할 수 없기 때문에 플레이 인덱스를 key로 사 용하는 것이 안전합니다.
+1. Game 함수에서 <li_key={move}>로 key를 추가할 수 있으며, 렌더링 된 게임을 다시 로드하면 React의 "key" 에러가 사라질 것입니다.
+```
+const moves = history.map((squares, move) => {
+  //...
+  return (
+    <li key={move}>
+      <button onClick={() => jumpTo(move)}>{description}</button>
+    </li>
+  );
+});
+```
+---
+- jumpTo를 구현하기 전에 사용자가 현재 어떤 단계를 보고 있는지를 추적할 수 있는 Game 컴포넌트의 state가 하나 더 필요합니다.
+1. 이를 위해 초기값이 0인 currentMove 라는 새 state 변수를 정의하세요.
+```
+export default function Game() {
+  const [xIsNext, setXIsNext] = useState(true);
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [currentMove, setCurrentMove] = useState(0);
+  const currentSquares = history[history.length - 1];
+  //...
+}
+```
+2. 다음으로 Game 내부의 jumpTo 함수를 수정해서, 해당 currentMove를 업데이트하세요.
+3. 또한 currentMove를 변경하는 숫자가 짝수면 xIsNext를 true로 설정하세요.
+```
+export default function Game() {
+  // ...
+  function jumpTo(nextMove) {
+    setCurrentMove(nextMove);
+    setXIsNext(nextMove % 2 === 0);
+  }
+  //...
+}
+```
+- 여기까지만 하면 내부적으로는 동작하지만 렌더링은 안되는 상태입니다.
+---
 ### 시간여행 구현하기 -2
+6. 마지막으로 항상 마지막 동작을 렌더링하는 대신 현재 선택한 동작을 렌더링하도록 Game 컴포넌트를 수정하겠습니다.
+```
+export default function Game() {
+  const [xIsNext, setXIsNext] = useState(true);
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [currentMove, setCurrentMove] = useState(0);
+  const currentSquares = history[currentMove];
+
+  // ...
+}
+```
+- 게임 히스토리의 특정 단계를 클릭하면 틱택토 보드가 즉시 업데이트되어 해당 단계가 발생한 시점의 보드 모양이 표시됩니다.
 
 ### 최종 정리
 - 코드를 자세히 살펴보면 currentMove가 짝수일 때는 xIsNext === true가 되고,
    currentMove가 홀수일 때는 xIsNext === false가 되는 것을 알 수 있습니다.
 - 즉, currentMove의 값을 알고 있다면 언제나 xIsNext가 무엇인지 알아낼 수 있습니다.
+- 따라서 이 두 가지 state를 모두 저장할 이유가 없습니다.
+- 항상 중복되는 state는 피하세요.
+- state에 저장하는 것을 단순화하면 버그를 줄이고 코드를 더 쉽게 이해할 수 있습니다.
+- Game을 변경하여 더 이상 xIsNext를 별도의 state 변수로 저장하지 않고 currentMove를 기반으로 알아내도록 수정하겠습니다.
+- 더 이상 xIsNext state 선언이나 setXIsNext 호출이 필요하지 않습니다.
+- 이제 컴포넌트를 코딩하는 동안 실수를 하더라도 xIsNext가 currentMove와 동기화되지 않을 가능성이 없습니다.
+```
+export default function Game() {
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [currentMove, setCurrentMove] = useState(0);
+  const xIsNext = currentMove % 2 === 0;
+  const currentSquares = history[currentMove];
 
+  function handlePlay(nextSquares) {
+    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+    setHistory(nextHistory);
+    setCurrentMove(nextHistory.length - 1);
+  }
+
+  function jumpTo(nextMove) {
+    setCurrentMove(nextMove);
+  }
+  // ...
+}
+```
 ---
 ## 2025-04-17 7주차
 ### state끌어올리기(6주차 이어서)
