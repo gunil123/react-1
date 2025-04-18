@@ -15,7 +15,138 @@
 ---
 ## 2025-04-17 7주차
 ### state끌어올리기(6주차 이어서)
-### 우승자 선언
+- handleClick 함수는 JavaScript의 slice() 배열 메서드를 사용하여 squares 배열의 사본인 nextSquares를 생성합니다. (참고 : developer.mozilla.org)
+- 그 다음 handleClick 함수는 nextSquares 배열의 첫 번째 Squares(index [0])에 X를 추가하여 업데이트합니다.
+- setSquares 함수를 호출하면 React는 컴포넌트의 state가 변경되었음을 알 수 있습니다.
+- 그러면 squares의 state를 사용하는 컴포넌트(Board)와 그 하위 컴포넌트(보드를 구성하는 Square 컴포넌트)가 다시 렌더링 됩니다.
+- 중요 합니다! : #이 설명은 문서의 코드 중 Board가 Square를 포함하고 있음을 전재.
+- JavaScript는 클로저를 지원하기 때문에 내부 함수가(예: handleClick) 외부 함수(예: Board) 에 정의된 변수 및 함수에 접근할 수 있습니다.
+- handleClick 함수는 squares의 state를 읽고 setSquares 메서드를 호출할 수 있는데, 이 두 함수는 Board 함수 내부에 정의되어 있기 때문입니다.
+### Closure의 개념
+- 클로저의 핵심은 스코프를 이용하여 변수의 접근 범위를 '폐쇄'하는 것에 있습니다.
+- 외부 함수 스코프에서 내부 함수 스코프로 접근이 불가능합니다.
+- 내부 함수에서는 외부 함수 스코프에서 선언된 변수에 접근이 가능합니다.
+- 장점
+1. 전역변수 사용의 최소화
+2. 데이터 보존 가능 (폐쇄성)
+3. 모듈화를 통한 코드 재사용에 편리
+4. 정보의 접근 제한 (캡슐화)
+### state 끌어올리기
+```
+export default function Board() {
+  const (squares, setsquares) usestate(Array()).fill(null));
+  function handleClick(1) {
+    const nextsquares - squares.slice();
+    nextSquares[1] = "x";
+    setsquares (nextsquares);
+  }
+  return (
+    // ...
+  )
+}
+```
+- 9. handleClick 함수에 업데이트할 Square의 index를 나타내는 인수 i를 추가하세요.
+```
+<Square value-(squares[0]} onsquareClick"(handleClick(1)} />
+```
+- 다음으로 인수 is handleClick에 전달해야 합니다.
+- Square의 onSquareClick prop를 아래와 같이 JSX에서 직접 handleClick(0)으로 설정할 수도 있지만, 이 방법은 작동하지 않습니다.
+- 그 이유는 다음과 같습니다.
+- handleClick(0) 호출은 Board 컴포넌트 렌더링의 일부가 됩니다.
+- handleClick(0)은 setSquares를 호출하여, Board 컴포넌트의 state를 변경하기 때문에 Board 컴포넌트 전체가 다시 렌더링 됩니다.
+- 하지만 이 과정에서 handleClick(0)은 다시 실행되기 때문에 무한 루프에 빠지게 됩니다.
+---
+- 10. 대신 이렇게 해보겠습니다.
+대신 이렇게 해보겠습니다.
+```
+export default function Board() { 
+  // ...
+  return (
+  <>
+    <div className="board-row">
+      <square value(squares[0]} onsquareclick"(()> handleClick(0)}/>
+      // ...
+  );
+}
+```
+- 새로운 문법()>에 주목하세요.
+- 여기서 () handleClick(0)은 화살표 함수로, 함수를 짧게 정의하는 방법입니다.
+- Square가 클릭 되면 => "화살표" 뒤의 코드가 실행되어 handleClick(0)을 호출합니다.
+- handleClick(0) 함수를 화살표 함수가 호출하고, 화살표 함수를 Square에 전달하는 것입니다.
+11. 이제 전달한 화살표 함수에서 handleClick을 호출하도록 나머지 8개의 Square 컴포넌트를 수정해야 합니다.
+```
+<Square value={squares[0]} onSquareClick={() => handleClick(0)} />
+''
+```
+-이제 Board가 모든 state를 관리하므로 부모 Board 컴포넌트는 자식 Square 컴포넌트가 올바르 게 표시될 수 있도록 props를 전달합니다.
+- Square를 클릭하면 자식 Square 컴포넌트가 부모 Board 컴포넌트에 Board의 state를 업데이트하도록 요청합니다.
+- Board의 state가 변경되면 Board 컴포넌트와 모든 자식 Square 컴포넌트가 자동으로 다시 렌더링 됩니다.
+- Board 컴포넌트에 속한 모든 Square의 state를 유지하면 나중에 승자를 결정할 수 있습니다.
+---
+- 사용자가 Board의 왼쪽 위 사각형을 클릭하여 X를 추가하면 어떤 일이 발생하는지 다시 한번 정리해 보겠습니다.
+- 왼쪽 위 사각형을 클릭하면 button이 Square로부터 onClick prop으로 받은 함수가 실행됩니다.
+- Square 컴포넌트는 Board에서 해당 함수를 onSquareclick props로 받았습니다.
+- Board 컴포넌트는 JSX에서 해당 함수를 직접 정의했습니다.
+- 이 함수는 0을 인수로 handleClick을 호출합니다.
+- handleClick은 인수 0을 사용하여 squares 배열의 첫 번째 엘리먼트를 null에서 X로 업데이트 합니다.
+- Board 컴포넌트의 squares state가 업데이트되어 Board와 그 모든 자식이 다시 렌더링 됩니 다.
+- 이에 따라 인덱스가 0인 Square 컴포넌트의 value prop이 null에서 X로 변경됩니다.
+- 최종적으로 사용자는 왼쪽 위 사각형을 클릭한 후 비어 있는 사각형이 X로 변경된 것을 확인할 수 있습니다.
+---
+- !중요합니다!
+- DOM 엘리먼트의 onClick 어트리뷰트(속성)는 빌트인 컴포넌트이기 때문에 React에서 특별한 의미를 갖습니다.
+- 사용자 정의 컴포넌트, 예를 들어 Square의 경우 이름은 사용자가 원하는 대로 지을 수 있습니다.
+- Square의 onSquareclick prop나 Board의 handleClick 함수에 어떠한 이름을 붙여도 코드는 동일하게 작동합니다.
+- React에서는 주로 이벤트를 나타내는 prop에는 onSomething과 같은 이름을 사용하고, 이벤트를 처리하는 함수를 정의 할 때는 handleSomething과 같은 이름을 사용합니다.
+### 불변성이 왜 중요할까요
+- 최종 결과는 같지만, 원본 데이터를 직접 변형하지 않음으로써 몇 가지 이점을 얻을 수 있습니다.
+1. 불변성을 사용하면 복잡한 기능을 훨씬 쉽게 구현할 수 있습니다.
+- 우리는 이 자습서의 뒷부분에서 게임의 진행 과정을 검토하고 과거 움직임으로 "돌아가기"를 할 수 있는 "시간 여행" 기능을 구현할 예정입니다.
+- 특정 작업을 실행 취소하고 다시 실행하는 기능은 이 게임에만 국한된 것이 아닌 앱의 일반적인 요구사항입니다.
+- 직접적인 데이터 변경을 피하면 이전 버전의 데이터를 그대로 유지하여 나중에 재사용(또는 초기화)할 수 있습니다.
+- 불변성을 사용하는 것의 또 다른 장점이 있습니다.
+- 기본적으로 부모 컴포넌트의 state가 변경되면 모든 자식 컴포넌트가 자동으로 다시 렌더링 됩니다.
+- 여기에는 변경 사항이 없는 자식 컴포넌트도 포함됩니다.
+- 리렌더링 자체가 사용자에게 보이는 것은 아니지만, 성능상의 이유로 트리의 영향을 받지 않는 부분의 리렌더링을 피하는 것이 좋습니다.
+- 불변성을 사용하면 컴포넌트가 데이터의 변경 여부를 저렴한 비용으로 판단할 수 있습니다.
+- memo API 참고서에서 React가 컴포넌트를 다시 렌더링할 시점을 선택하는 방법에 대해 살펴볼 수 있습니다.
+---
+### 교대로 두기
+```
+export default function Board() { 
+  const [xIsNext, setXIsNext]useState(true);
+  const (squares, setsquares)-usestate(Array(9).fill(null));
+  function handleClick(1) 
+    const nextsquares-squares.slice(); 
+    if (xisNext) {
+      nextSquares[1] "x";
+    } else {
+      nextSquares[1] "0";
+    }
+    setSquares (nextSquares);
+    setxisNext(IxIsNext);
+    return (
+      // ...
+  );
+}
+```
+- X와 O 번갈아가면서 표시 수정
+- 같은 사각형 여러번 클릭 시 문제 발생  
+```
+function handleClick {
+  if (squares[1]) {
+    return;
+  }
+  const nextsquares-squares.slice();
+  // ...
+}
+```
+- 이제 빈 사각형에 X 또는 0만 추가할 수 있습니다!
+### return의 의미
+- 작성한 코드에는 return 값이 없습니다.
+- JavaScript에서 return 값이 없는 return;은 함수를 즉시 종료하라는 의미입니다.
+- 이때 값을 반환하지 않으면 자동으로 undefined를 반환합니다. = squares[i]가 이미 값이 있다면(누군가 이미 둔 곳이라면), 그 자리에 다시 둘 수 없으니 아무일도 하지 말고 함수를 끝내는 것입니다.
+---
 ### 승자 결정하기
 ```
   function calculateWinner(squares) {
@@ -38,6 +169,50 @@
     return null;
   }
 ```
+- 승리할 수 있는 경우 2차원 배원 선언, line과 squares 비교 위한 for문 작성, 비교 위해 구조 분해 할당
+### 구조 분해 할당
+- lines는 승리 할 수 있는 squares의 index 번호입니다.
+- for문을 통해 lines의 길이 만큼 비교를 반복합니다.
+- 구조 분해 할당을 통해 lines의 index를 a, b, c에 보관합니다.
+- squares의 해당 index 값을 비교하여 3개가 모두 일치하면 값이 X인지 0인지를 return합니다.
+- 일치하는 것이 없으면 null을 return합니다. 
+### 승자 결정하기
+```
+function handleClick(1) {
+  if (squares[1] || calculatewinner(squares)) { 
+    return;
+  }
+  const nextsquares-squares.slice();
+  // ...
+}
+```
+- Board 컴포넌트의 handleClick 함수에서 calculateWinner(squares)를 호출하여 플레이어가 이겼는지 확인하세요.
+- 이 검사는 사용자가 이미 X 또는 0가 있는 사각형을 클릭했는지를 확인하는 것과 동시에 수행할 수 있습니다.
+- 두 경우 모두 함수를 조기 반환하겠습니다. 함수를 즉시 종료한다는 의미 입니다.
+- 여기까지 작성하면 경기는 정상적으로 진행되지만, 경기 종료 알림 표시가 나오지 않습니다.
+---
+- 게임이 끝났을 때 플레이어에게 알리기 위해 "Winner: X" 또는 Winner: "라고 표시하겠습니다.
+- 이렇게 하려면 Board 컴포넌트에 status 구역을 추가하면 됩니다.
+- 게임이 끝나면 status는 승자를 표시하고, 게임이 진행 중인 경우 다음 플레이어의 차례를 표시합니다.
+```
+export default function Board() {
+  // ...
+  const winner calculatewinner(squares);
+  let status;
+  if (winner) {
+    status = "Winner: " + winner;
+  } else {
+    status = "Next player: " + (xIsNext ? "X" : "0");
+  }
+
+  return (
+    <>
+    <div className="status">{status}</div>
+    <div className="board-row">
+    //...
+  )
+}
+```
 ### 한번 더 state 끌어올리기
 
 - 이제 과거 플레이 목록을 표시하기 위해 새로운 최상의 컴포넌트 Game을 작성.
@@ -46,12 +221,33 @@
 - Square 컴포넌트에서 Board 컴포넌트로 state를 "끌어올렸던" 것처럼, 이제 Board 컴포넌트에서 최상의 Game 컴포넌트로 state를 끌어올릴 수 있음.
 - 이렇게 하면 Game 컴포넌트가 Board 컴포넌트의 데이터를 완전히 제거하고 Board의 history에서 이전 순서를 렌더링하도록 지시할 수 있음.
 ### 한번 더 state 끌어올리기
-
-1. 먼저
-2.
-3.
-4.
-5.
+- !Board 컴포넌트를 Game 컴포넌트로 변경
+1. 먼저 export default가 있는 Game 컴포넌트를 추가하세요.
+2. 마크업 안에 Board 컴포넌트를 렌더링하도록 하세요.
+3. export default 컴포넌트는 하나의 컴포넌트 파일 안에 하나만 존재해야 하므로 Board에서는 삭제합니다.
+4. 이것은 index.js 파일에서 Board 컴포넌트 대신 Game 컴포넌트를 최상위 컴포넌트로 사용하도록 지시합니다.
+5. Game 컴포넌트가 반환하는 내용에 추가한 div는 나중에 보드에 추가할 게임 정보를 위한 공간을 확보합니다.
+▲ 주의
+#우리는 index가 아니고 App에서 불러오고 있습니다.
+#최상위 컴포넌트이기 때문에 최상위에 선언합니다.
+#최상위 컴포넌트와 파일이름은 일치 시키는 것이 좋습니다.
+```
+function Board() {
+  // ...
+}
+export default function Game() { 
+  return (
+    <div className="game">
+      <div className="game-board"> 
+        <Board/>
+      </div>
+      <div className="game-info"> 
+        <ol>{/*TODO*/}</ol>
+      </div>
+    </div>
+  );
+}
+```
 ---
 ## 2025-04-10 6주차
 ### 틱택토 만들기
