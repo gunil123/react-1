@@ -1,4 +1,127 @@
 #  박건일 학번:202130115
+## 2025-05-15 (11주차)
+### Step 3: 최소한의 데이터만 이용해서 완벽하게 UI State 표현하기
+- 1. 제품의 원본 목록은 props로 전달되었기 때문에 state가 아닙니다.
+- 2. 사용자가 입력한 검색어는 시간이 지남에 따라 변하고, 다른 요소로부터 계산될 수 없기 때문에 state로 볼 수 있습니다.
+- 3. 체크박스의 값은 시간에 따라 바뀌고 다른 요소로부터 계산될 수 없기 때문에 state로 볼 수 있습니다.
+- 4. 필터링된 제품 목록은 원본 제품 목록을 받아서 검색어와 체크박스의 값에 따라 계산할 수 있으므로, 이는 state가 아닙니다.
+- 따라서, 검색어와 체크박스의 값 만이 state입니다.
+- #공식 문서의 자세히 살펴보기를 통해서 Props와 State에 관해서 다시 한번 정리합니다.
+### Props vs State
+#### React는 props와 state라는 두 개의 데이터 “모델”이 존재합니다. 둘의 성격은 매우 다릅니다.
+
+- Props는 함수를 통해 전달되는 인자 같은 성격을 가집니다.  props는 부모 컴포넌트로부터 자식 컴포넌트로 데이터를 넘겨서 외관을 커스터마이징하게 해줍니다. 
+예를 들어, Form은 color라는 prop을 Button으로 보내서 Button을 내가 원하는 형태로 커스터마이징시킬 수 있습니다.
+- State는 컴포넌트의 메모리 같은 성격을 가집니다. state는 컴포넌트가 몇몇 정보를 계속 따라갈 수 있게 해주고 변화하면서 상호작용(interaction)을 만들어 냅니다. 예를 들어, Button은 isHovered라는 state를 따라갈 것입니다.
+- props와 state는 다르지만, 함께 동작합니다. state는 보통 부모 컴포넌트에 저장됩니다. ( 그래서 부모 컴포넌트는 그 state를 변경할 수 있습니다. ) 그리고 부모 컴포넌트는 state를 자식 컴포넌트에 props로서 전달합니다. 처음 봤을 때 둘의 차이를 잘 알기 어려워도 괜찮습니다. 약간 연습이 필요할 거예요!
+---
+### Step 4: State가 어디에 있어야 할 지 정하기
+- 이제 앱에서 최소한으로 필요한 state를 결정했습니다.
+- 다음으로는 어떤 컴포넌트가 이 state를 소유하고, 변경할 책임을 지게 할 지 정해야 합니다.
+- React는 항상 컴포넌트 계층구조를 따라 부모에서 자식으로 데이터를 전달하는 단방향 데이터 흐름을 사용하는 것을 기억하세요!
+- 앱을 구현하면서 어떤 컴포넌트가 state를 가져야 하는 지 바로 명확하지 않을 수 있습니다.
+- 이 개념이 처음이라면 더 어려울 수 있습니다.
+- 그러나 아래의 과정을 따라가면 해결할 수 있습니다.
+- 애플리케이션의 각 state에 대해서,
+- 1. 해당 state를 기반으로 렌더링하는 모든 컴포넌트를 찾으세요.
+- 2. 그들의 가장 가까운 공통되는 부모 컴포넌트를 찾으세요. - 계층에서 모두를 포괄하는 상위 컴포넌트
+- 3. state가 어디에 위치 돼야 하는지 결정합시다
+
+- state가 어디에 위치되어야 하는지 결정하려면,
+- 1. 대개, 공통 부모에 state를 그냥 두면 됩니다.
+- 2. 혹은, 공통 부모 상위의 컴포넌트에 둬도 됩니다.
+- 3. state를 소유할 적절한 컴포넌트를 찾지 못했다면, state를 소유하는 컴포넌트를 하나 만들어서 상위 계층에 추가하세요.
+- 이전 단계에서, 이 애플리케이션의 두 가지 state인 “사용자의 검색어 입력과 체크박스의 값"을 발견하였습니다.
+- 이 예시에서 두 가지 state 항상 함께 나타나기 때문에 같은 위치에 두는 것이 합리적입니다.
+
+- 1. state를 쓰는 컴포넌트를 찾아봅시다.
+  - ProductTable은 state에 기반한 상품 리스트를 필터링해야 합니다.
+  (검색어와 체크 박스의 값)
+  - SearchBar는 state를 표시해 주어야 합니다. (검색어와 체크 박스의 값)
+- 2. 공통 부모를 찾아봅시다.
+  - 둘 모두가 공유하는 첫 번째 부모는 FilterableProductTable입니다.
+- 3. 어디에 state가 존재해야 할지 정해봅시다: 
+  - 우리는 FilterableProductTable에 검색어와 체크 박스 값을 state로 둘 겁니다.
+- 이제 state 값은 FilterableProductTable 안에 있습니다.
+- useState() Hook을 이용해서 state를 컴포넌트에 추가하세요.
+- Hooks는 React 기능에 "연결할 수(hook into)" 있게 해주는 특별한 함수입니다.
+
+- 1. FilterableProductTable의 상단에 두 개의 state 변수를 추가해서 초기값을 명확하게 보여주세요.
+- 2. 다음으로, filterText와 inStockOnly를 ProductTable와 SearchBar에게 props로 전달하세요.
+```
+<div>
+  <SearchBar
+    filterText={filterText}
+    inStockOnly={inStockOnly} />
+  <ProductTable
+    products={products}
+    filterText={filterText}
+    inStockOnly={inStockOnly} />
+</div>
+```
+- 이제 애플리케이션이 어떻게 동작하는지 알 수 있습니다.
+- filterText의 초깃값을 useState('')에서 useState('fruit')로 수정해 보세요.
+- 검색창과 데이터 테이블이 모두 업데이트됨을 확인할 수 있습니다.
+
+- 3.ProductTable의 props를 추가해 줍니다. products, filterText, inStockOnly
+- 4.ProductTable의 forEach문을 수정합니다.
+- #첫 번째 코드와 비교해 보면서 어디가 수정되었는지 정확하게 수정해 줘야 합니다.
+- 아직 폼을 수정하는 작업이 작동하지 안습니다. 문서의 샌드박스에서 콘솔 에러가 발생하고 그 이유를 설명하겠습니다.
+- 완성된 코드를 보면, ProductTable와 SearchBar가 filterText와 inStockOnly props를 table, input과 체크 박스를 렌더링하기 위해서 읽고 있습니다.
+- 예를 들면, SearchBar input의 value를 아래와 같이 채우고 있습니다.
+- 그러나 아직 사용자의 키보드 입력과 같은 행동에 반응하는 코드는 작성하지 않았습니다. 이 과정을 마지막 단계에서 진행할 예정입니다.
+---
+### Step5: 역 데이터 흐름 추가하기
+- 지금까지 우리는 계층 구조 아래로 흐르는 props와 state의 함수로써 앱을 만들었습니다.
+- 이제 사용자 입력에 따라 state를 변경하려면 반대 방향의 데이터 흐름을 만들어야 합니다.
+- 이를 위해서는 계층 구조의 하단에 있는 컴포넌트에서 FilterableProductTable의 state를 업데이트할 수 있어야 합니다.
+- React는 데이터 흐름을 명시적으로 보이게 만들어 줍니다.
+- 그러나 이는 전통적인 양방향 데이터 바인딩보다 조금 더 많은 타이핑이 필요합니다.
+- 4단계의 예시에서 체크하거나 키보드를 타이핑할 경우 UI의 변화가 없고 입력을 무시하는 것을 확인할 수 있습니다.
+- 이것은 의도적으로 로 코드를 쓰면서 value라는 prop이 항상 FilterableProductTable의 filterText라는 state를 통해서 데이터를 받도록 정했기 때문입니다.
+- filterText라는 state가 변경되는 게 아니기 때문에 input의 value는 변하지 않고 화면도 바뀌는 게 없습니다.
+
+- filterText라는 state가 변경되는 것이 아니기 때문에 input의 value는 변하지 않고 화면도 바뀌는 것이 없습니다.
+- 우리는 사용자가 input을 변경할 때마다 사용자의 입력을 반영할 수 있도록 state를 업데이트하기를 원합니다.
+- state는 FilterableProductTable이 가지고 있고 state 변경을 위해서는 setFilterText와 setInStockOnly를 호출을 하면 됩니다.
+- SearchBar가 FilterableProductTable의 state를 업데이트할 수 있도록 하려면, 이 함수들을 SearchBar로 전달해야 합니다.
+```
+function FilterableProductTable({ products }) {
+  const [filterText, setFilterText] = useState('');
+  const [inStockOnly, setInStockOnly] = useState(false);
+
+  return (
+    <div>
+      <SearchBar
+        filterText={filterText}
+        inStockOnly={inStockOnly}
+        onFilterTextChange={setFilterText}
+        onInStockOnlyChange={setInStockOnly} />
+```
+
+- SearchBar에서 onChange 이벤트 핸들러를 추가하여 부모 state를 변경할 수 있도록 구현할 수 있습니다.
+```
+function SearchBar({
+  filterText,
+  inStockOnly,
+  onFilterTextChange,
+  onInStockOnlyChange
+}) {
+  return (
+    <form>
+      <input
+        type="text"
+        value={filterText}
+        placeholder="Search..."
+        onChange={(e) => onFilterTextChange(e.target.value)}
+      />
+      <label>
+        <input
+          type="checkbox"
+          checked={inStockOnly}
+          onChange={(e) => onInStockOnlyChange(e.target.checked)}
+```          
+- App.css를 import하기
 ## 2025-05-08 (10주차)
 ### React로 사고하기
 - React를 사용하게 되면 우리가 고려하고 있는 디자인이나 만들 앱들에 대한 생각을 바꿀 수 있습니다.
@@ -73,7 +196,6 @@
 - 애플리케이션이 필요로 하는 가장 최소한의 state를 파악하고, 나머지 모든 것들은 필요에 따라 실시간으로 계산하세요.
 - 예를 들어, 쇼핑 리스트를 만든다고 하면 당신은 배열에 상품 아이템들을 넣을 겁니다.
 - UI에 상품 아이템의 개수를 노출하고 싶다면, 상품 아이템 개수를 따로 state 값으로 가지는 게 아니라 단순하게 배열의 길이만 쓰면 됩니다.
-
 - 예시 애플리케이션 내 데이터들을 생각해 봅시다. 애플리케이션은 다음과 같은 데이터를 가지고 있습니다.
   1. 제품의 원본 목록
   2. 사용자가 입력한 검색어
