@@ -96,7 +96,7 @@ root.render(<NavigationBar />);
 - @types/react의 일반적인 타입
 - 추가 학습 위치
 ---
-### TypeScript 사용하기-설치
+### 06-2 TypeScript 사용하기-설치
 - 모든 프로덕션 수준의 React 프레임워크는 TypeScript 사용을 지원합니다. 프레임워크별 설치 가이드를 따르세요.
 Next.is, Remix, Gatsby, Expo
 [기존 React 프로젝트에 TypeScript 추가하기]
@@ -153,9 +153,11 @@ const [status, setStatus] = useState<Status>("idle");
 - #이 4가지 Hook은 더 복잡한 state를 관리하거나, 이미 계산된 값이나 함수를 저장하는 목적으로 사용됩니다.
 - #문서에서는 간략한 예제와 함께 자세한 설명에 대한 링크를 제공하고 있지만 이번 강의에서는 생략합니다.
 - #다만 이 Hook들이 어떤 역할을 하는지 간단히 설명하도록 하겠습니다. 
-[useReducer ] useState보다 복잡한 상태 로직을 처리할 때 사용하며, 상태 변경을 함수로 정의 하고 명령(dispatch)로 업데이트합니다. 
-[useContext ] 컴포넌트 간에 상태나 값을 전역처럼 공유할 수 있게 해주는 Hook입니다. (ex: 로 하고 명령(dispatch)로 업데이트합니다. [useContext ] 컴포넌트 간에 상태나 값을 전역처럼 공유할 수 있게 해주는 Hook입니다. (ex: 로 그인 정보, 테마, 언어) [useMemo ] 한 번 계산된 결과 값을 기억(memoize)해 두었다가 재 사용해서 불필요한 계산 방지 하기 위해 사용됩니다. 메모화(Memoization)
-[useCallbak ] 함수 자체를 기억해서 불필요한 재생성 막기위해 사용.
+- [useReducer ] useState보다 복잡한 상태 로직을 처리할 때 사용하며, 상태 변경을 함수로 정의 하고 명령(dispatch)로 업데이트합니다. 
+- [useContext ] 컴포넌트 간에 상태나 값을 전역처럼 공유할 수 있게 해주는 Hook입니다. (ex: 로 하고 명령(dispatch)로 업데이트합니다. 
+- [useContext ] 컴포넌트 간에 상태나 값을 전역처럼 공유할 수 있게 해주는 Hook입니다. (ex: 로 그인 정보, 테마, 언어) 
+- [useMemo ] 한 번 계산된 결과 값을 기억(memoize)해 두었다가 재 사용해서 불필요한 계산 방지 하기 위해 사용됩니다. 메모화(Memoization)
+- [useCallbak ] 함수 자체를 기억해서 불필요한 재생성 막기위해 사용.
 ## 06-3. React 개발자 도구
 - React 개발자 도구를 사용하여 React 컴포넌트를 검사하고, Props와 State를 편집할 수 있으며 성능 문제를 식별할 수 있습니다.
 - React로 빌드된 웹 사이트를 디버깅하는 가장 쉬운 방법은 React 개발자 도구 브라우저 확장 프로그램을 설치하는 것입니다. 널리 사용되는 여러 브라우저에서 사용할 수 있습니다.
