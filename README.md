@@ -86,6 +86,7 @@ root.render(<NavigationBar />);
   - 만약 ESLint 프리셋에 포매팅 규칙이 있는 경우 Prettier와 충돌을 일으킬 수도 있습니다.
   - ESLint가 오직 논리적 실수를 잡는 데만 사용되도록 eslint-config-prettier를 사용하여 FSlint 프리세이 모드 매티 규칙을 비활성하는 것을 권장합니다.
   - Pull request가 merge 되기 전에 파일 형식이 지정되도록 하려면 지속적인 통합을 위해 prettier --check 사용하세요.
+---  
 - TypeScript는 JavaScript 코드 베이스에 타입 정의를 추가하는 데 널리 사용되는 방법입니다.
 - 기본적으로 TypeScript는 JSX를 지원하며, @types/react 및 @types/react-dom을 추가하면 완전한 React Web 지원을 받을 수 있습니다.
 (학습 내용)
