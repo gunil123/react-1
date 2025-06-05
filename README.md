@@ -95,7 +95,7 @@ root.render(<NavigationBar />);
 - @types/react의 일반적인 타입
 - 추가 학습 위치
 ---
-### TypeScript 사용하기-설치치
+### TypeScript 사용하기-설치
 - 모든 프로덕션 수준의 React 프레임워크는 TypeScript 사용을 지원합니다. 프레임워크별 설치 가이드를 따르세요.
 Next.is, Remix, Gatsby, Expo
 [기존 React 프로젝트에 TypeScript 추가하기]
