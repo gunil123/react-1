@@ -1,4 +1,214 @@
 #  박건일 학번:202130115
+## 2025-06-05(14주차)
+### 5-3. 기존 프로젝트에 React 추가
+[2단계: 페이지 어디에서든 React 컴포넌트 렌더링하기]
+
+- 이전 단계에서는, 메인 파일 최상단에 아래 코드를 넣었습니다.
+- 당연히 실제로는 기존 HTML 콘텐츠를 지우고 싶지 않을 겁니다! -> 그렇다면 이 코드를 삭제하세요.
+- 대신 React 컴포넌트를 HTML의 특정 위치에 렌더링하고 싶을 것입니다.
+- HTML 페이지를 열고(또는 이를 생성하는 서버 템플릿) HTML 태그에 고유한 id 어트리뷰트를 추가하세요.
+```
+<!-- ... html의 어딘가 ... -->
+<nav id="navigation"></nav>
+<!-- ... 더 많은 html ... -->
+```
+- 이렇게 하면 document.getElementById로 HTML 엘리먼트를 찾아 createRoot에 전달함으로써 해당 요소 내부에 React 컴포넌트를 렌더링할 수 있습니다.
+```
+import { createRoot } from 'react-dom/client';
+
+function NavigationBar() {
+ // TODO: 실제로 네비게이션 바를 구현합니다.
+ return <h1>Hello from React!</h1>;
+}
+
+const domNode = document.getElementById('navigation');
+const root = createRoot(domNode);
+root.render(<NavigationBar />);
+```
+- #이 코드에는 "This paragraph is a part of HTML."라는 문구를 찾을 수가 없습니다. 어디에 있을까요?
+- #codesandbox에서 확인해 보세요.
+---
+- 기존에 존재하던 index.html의 원본 HTML 컨텐츠가 그대로 남아있는 것을 확인할 수 있습니다.
+- 하지만 이제는 <!nav id="nagative">안에 개발자가 직접 작성한 NavigationBar React 컴포넌트가 나타납니다.
+- 기존 HTML 페이지에서 React 컴포넌트가 렌더링 되는 것에 대하여 더 알아보려면 createRoot 사용법 문서를 읽어보세요. 이 문서는 React 내부 문서 입니다.
+- 기존 프로젝트에서 React를 도입할 때, 일반적으로 작은 상호작용 컴포넌트(예시: 버튼)에서 시작하여 점진적으로 '상위 구조로 확장하면서" 결국에는 전체 페이지가 React로 빌드될 때까지 이 과정을 반복하게 됩니다.
+- 이 지점에 도달한다면 React의 장점을 최대한 활용하기 위해 React 프레임워크로 마이그레이션 하는 것을 권장합니다.
+
+[기존 네이티브 모바일 앱에서 React Native 사용하기]
+
+- React Native 역시 기존 네이티브 앱에 점진적으로 통합할 수 있습니다.
+- 안드로이드(Java 또는 Kotlin)나 iOS (Objective-C 또는 Swift) 앱을 개발하고 있다면, 가이드를 참고하여 React Native 화면을 추가해보세요.
+---
+### 06-1. 에디터 설정하기
+[에디터 설정하기]
+
+- 적절한 개발환경은 코드의 가독성을 높이며, 개발 속도를 높여줍니다.
+- 심지어 코드를 작성하는 과정에서 버그를 찾아줄 수도 있습니다.
+- 코드 에디터를 설치하는 것이 이번이 처음이거나, 현재 사용하는 에디터의 설정을 개선하고 싶으시다면 몇 가지 추천 사항이 있습니다. 
+(학습 내용)
+- 어떤 에디터가 가장 유명한지
+- 어떻게 자동으로 코드를 포매팅하는지
+---
+- VS Code는 현재 가장 많이 사용되는 에디터 중 하나입니다.
+- VS Code에 설치할 수 있는 익스텐션의 종류는 무수히 많으며, Github과 같은 외부 서비스와의 연동도 지원합니다.
+- 아래에 나열된 기능들은 대부분 익스텐션으로 존재하기 때문에 VS Code의 설정은 다양한 방식으로로 쉽게 변경할 수 있습니다.
+- 그 외에도 React 커뮤니티에서는 다음과 같은 에디터들이 흔히 사용됩니다.
+- WebStorm은 JavaScript에 특화되어 설계된 통합 개발 환경입니다.
+- Sublime Text는 JSX와 TypeScript를 지원하며 문법 강조 및 자동 완성 기능이 내장되어 있습니다.
+- Vim은 모든 종류의 테스트를 매우 효율적으로 생성하고 변경할 수 있도록 설계된 텍스트 편집기 입니다. 대부분의 UNIX 시스템과 Apple OS X에 “vi”로 포함되어 있습니다.
+---
+[에디터 기능 추천] 이러한 기능들이 기본으로 설정된 에디터들도 있지만, 별도의 익스텐션 추가가 필요한 경우도 존재합 니다. 현재 사용 중인 에디터에서 어떠한 기능을 지원하는지 한번 확인해 보세요!
+
+1. Linting
+- 코드 린터는 코드를 작성하는 동안 실시간으로 문제를 찾아 줌으로써 빠른 문제해결이 가능하도록 도와줍니다.
+- ESLint는 많이 사용되고 JavaScript를 위한 오픈소스 린터입니다.
+  - React를 위한 추천 설정과 함께 ESLint 설치하기 (사전에 Node가 설치되어 있어야 합니다)
+  - VS Code의 ESLint를 공식 익스텐션과 통합하기
+- 프로젝트의 모든 eslint-plugin-react-hooks 규칙을 활성화했는지 확인하세요. 이 규칙은 필수적이며 가장 심각한 버그를 조기에 발견합니다.
+- 권장되는 eslint-config-react-app 프리셋에는 이미 이 규칙이 포함되어 있습니다.
+2. Formatting
+- 다른 개발자들과 협업할 때 가장 피하고 싶은 것은 탭 vs 공백에 대한 논쟁일 것입니다.
+- 다행히 Prettier를 사용하면 직접 지정해 놓은 규칙들에 부합하도록 코드의 형식을 깔끔하게 정리할 수 있습니다.
+- Prettier를 실행하면 모든 탭은 공백으로 전환될 뿐만 아니라 들여쓰기, 따옴표 형식과 같은 요소들이 전부 설정에 부합하도록 수정될 것입니다.
+- 파일을 저장할 때마다 Prettier가 자동 실행되어 이러한 작업들을 수행해 주는 것이 가장 이상적인 설정입니다.
+- 다음과 같은 단계를 통해 VS Code의 Prettier 익스텐션을 설치할 수 있습니다.
+  1. VS Code 실행하기
+  2. 퀵오픈 사용하기 (Ctrl/Cmd+P 누르기)
+  3. ext install esbenp.prettier-vscode라고 입력하기
+---
+저장 시점에 포매팅하기 : 저장할 때마다 코드가 포매팅 되는 것이 가장 이상적일 것입니다. 이러한 설정은 YS Code에 자체적으로 내장되어 있습니다!
+
+1. VS Code에서 CTRL/CMD+SHIFT+ P 누르기
+2. "settings"라고 입력하기
+3. 엔터 누르기
+4. 검색 창에서 "format on save"라고 입력하기
+5. "format on save" 옵션이 제대로 체크되었는지 확인하세요!
+  - 만약 ESLint 프리셋에 포매팅 규칙이 있는 경우 Prettier와 충돌을 일으킬 수도 있습니다.
+  - ESLint가 오직 논리적 실수를 잡는 데만 사용되도록 eslint-config-prettier를 사용하여 FSlint 프리세이 모드 매티 규칙을 비활성하는 것을 권장합니다.
+  - Pull request가 merge 되기 전에 파일 형식이 지정되도록 하려면 지속적인 통합을 위해 prettier --check 사용하세요.
+- TypeScript는 JavaScript 코드 베이스에 타입 정의를 추가하는 데 널리 사용되는 방법입니다.
+- 기본적으로 TypeScript는 JSX를 지원하며, @types/react 및 @types/react-dom을 추가하면 완전한 React Web 지원을 받을 수 있습니다.
+(학습 내용)
+
+- React 컴포넌트가 있는 Typescript
+- Hooks 타이핑 예시
+- @types/react의 일반적인 타입
+- 추가 학습 위치
+---
+### TypeScript 사용하기-설치치
+- 모든 프로덕션 수준의 React 프레임워크는 TypeScript 사용을 지원합니다. 프레임워크별 설치 가이드를 따르세요.
+Next.is, Remix, Gatsby, Expo
+[기존 React 프로젝트에 TypeScript 추가하기]
+- 최신 버전의 React 타입 정의를 설치합니다. npm install @types/react @types/react-dom
+- 다음 컴파일러 옵션을 tsconfig.json에 설정해야 합니다.
+  1. dom은 lib에 포함되어야 합니다(주의: lib 옵션이 지정되지 않으면, 기본적으로 dom이 포함됩니다).
+  2. jsx를 유효한 옵션 중 하나로 설정해야 합니다. 대부분의 애플리케이션에서는 preserve로 충분합니다. 라이브러리를 게시하는 경우 어떤 값을 선택해야 하는지 jsx 설명서를 참조하세요.
+---
+[React 컴포넌트에 TypeScript 사용하기]
+
+- JSX를 포함하고 있는 모든 파일은 .tsx 파일 확장자를 사용해야 합니다.
+- 이것은 이 파일이 JSX를 포함하고 있음을 TypeScript에 알려주는 TypeScript 전용 확장자입니다.
+- React와 함께 TypeScript를 작성하는 것은 React와 함께 JavaScript를 작성하는 것과 매우 유사합니다.
+- 컴포넌트로 작업할 때 가장 중요한 차이점은 컴포넌트의 props에 타입을 제공할 수 있다는 점입니다.
+- 이러한 타입은 에디터에서 정확성을 검사하고, 인라인 문서를 제공하는 데 사용할 수 있습니다.
+- 빠르게 시작하기 가이드에서 가져온 MyButton 컴포넌트를 예로 들어 버튼의 title을 설명하는 타입을 추가할 수 있습니다.  
+---
+- App.tsx를 생성하고 App.js를 수정합니다.
+- 이 문서에 있는 샌드박스들은 TypeScript 코드를 다룰 수는 있지만 타입을 검사하지는 않습니다.
+- 즉, TypeScript 샌드박스를 수정하여 학습할 수는 있지만 타입 오류나 경고는 발생하지 않습니다.
+- 타입 검사를 받으려면, TypeScript Playground를 사용하거나 더 완전한 기능을 갖춘 온라인 샌드박스를 사용할 수 있습니다.
+- 이 인라인 문법은 컴포넌트에 타입을 제공하는 가장 간단한 방법이지만, 설명할 필드가 많아지기 시작하면 다루기 어려워질 수 있습니다.
+- 대신, interface나 type을 사용하여 컴포넌트의 props를 설명할 수 있습니다.
+---
+- 컴포넌트의 props를 설명하는 타입은 원하는 만큼 단순하거나 복잡할 수 있습니다.
+- 다만 type 또는 interface로 설명되는 객체 타입이어야 합니다.
+- TypeScript가 객체를 설명하는 방법에 대해 Object Types에서 배울 수 있습니다.
+- 또한 Union Types을 통해 몇 가지 타입 중 하나의 타입을 선택하는 prop 사용법을 배울 수도 있습니다.
+- 만일 더 고급 사용 예시는 Creating Types from Types(타입에서 타입 만들기) 가이드를 참고 하세요.
+- MyApp과 MyApp2를 비교
+---
+### 06-2. TypeScript 사용하기 - Hooks 예시
+- @types/react의 타입 정의에는 내장 Hooks에 대한 타입이 포함되어 있기때문에 추가 설정 없이 컴포넌트에 사용할 수 있습니다.
+- 이 타입 정의는 컴포넌트에 작성한 코드를 고려하도록 만들어졌기 때문에 대부분의 경우 추론된 타입을 얻을 수 있어서 사소한 타입 제공 작업은 처리할 필요가 없습니다.
+- hooks에 타입을 제공하는 몇 가지 방법의 예시는 다음과 같습니다. 
+[useState ]
+useState hook은 초기 state로 전달된 값을 재사용하여 값의 타입을 결정합니다. 예를 들어
+
+```
+// 타입을 "boolean"으로 추론합니다
+const [enabled, setEnabled] = useState(false);
+```
+- boolean 타입이 enabled에 할당되고, setEnabled 는 boolean 인수나 boolean을 반환하는 함 수가 됩니다.
+- state에 대한 타입을 명시적으로 제공하려면 useState 호출에 타입 인수를 제공하면 됩니다.
+- 이 경우에는 그다지 유용하지 않지만, 일반적으로 타입 제공을 원하게 되는 경우는 Union Types 이 있는 경우입니다.
+- 예를 들어 다음의 status는 몇 가지 다른 문자열 중 하나일 수 있습니다.
+```
+type Status = "idle" | "loading" | "success" | "error";
+const [status, setStatus] = useState<Status>("idle");
+```
+- 또는 State 구조화 원칙에서 권장하는 대로, 관련 state를 객체로 그룹화하고 객체 타입을 통해 다른 가능성을 설명할 수 있습니다. Requeststate
+---
+- #useState 외에도 문서에서는 4가지 Hook을 더 설명하고 있습니다.
+- #이 4가지 Hook은 더 복잡한 state를 관리하거나, 이미 계산된 값이나 함수를 저장하는 목적으로 사용됩니다.
+- #문서에서는 간략한 예제와 함께 자세한 설명에 대한 링크를 제공하고 있지만 이번 강의에서는 생략합니다.
+- #다만 이 Hook들이 어떤 역할을 하는지 간단히 설명하도록 하겠습니다. 
+[useReducer ] useState보다 복잡한 상태 로직을 처리할 때 사용하며, 상태 변경을 함수로 정의 하고 명령(dispatch)로 업데이트합니다. 
+[useContext ] 컴포넌트 간에 상태나 값을 전역처럼 공유할 수 있게 해주는 Hook입니다. (ex: 로 하고 명령(dispatch)로 업데이트합니다. [useContext ] 컴포넌트 간에 상태나 값을 전역처럼 공유할 수 있게 해주는 Hook입니다. (ex: 로 그인 정보, 테마, 언어) [useMemo ] 한 번 계산된 결과 값을 기억(memoize)해 두었다가 재 사용해서 불필요한 계산 방지 하기 위해 사용됩니다. 메모화(Memoization)
+[useCallbak ] 함수 자체를 기억해서 불필요한 재생성 막기위해 사용.
+## 06-3. React 개발자 도구
+- React 개발자 도구를 사용하여 React 컴포넌트를 검사하고, Props와 State를 편집할 수 있으며 성능 문제를 식별할 수 있습니다.
+- React로 빌드된 웹 사이트를 디버깅하는 가장 쉬운 방법은 React 개발자 도구 브라우저 확장 프로그램을 설치하는 것입니다. 널리 사용되는 여러 브라우저에서 사용할 수 있습니다.
+  - Chrome용으로 설치
+  - Firefox용으로 설치
+  - Edge용으로 설치
+- 설치가 완료된 후 React로 빌드된 사이트에 방문하면 Components and Profiler 패널이 표시됩니다.
+## 06-4. React 컴파일러
+- 이 페이지는 React 컴파일러에 대한 소개와 이를 성공적으로 사용하는 방법을 제공합니다.
+1. 컴파일러 시작하기
+2. 컴파일러 및 ESLint 플러그인 설치
+3. 문제 해결
+- React 컴파일러는 커뮤니티로부터 초기 피드백을 받기 위해 RC(Release Candidate) 버전으로 오픈소스화한 새로운 컴파일러입니다. 이제 모든 분께 이 컴파일러를 사용해 보고 피드백을 제 공할 것을 권장합니다.
+- React 컴파일러는 커뮤니티로부터 초기 피드백을 받기 위해 오픈 소스화한 새로운 컴파일러입니다.
+---
+## 1. GitHub Pages 기본 저장소란?
+- GitHub Pages를 운영하려면 먼저 GitHub Pages 저장소를 생성해야 합니다.
+- 생성 방법은 일반 저장소 생성과 동일하지만, 저장소 이름은 도메인 형태로 해야 합니다.
+- 또한 최상위 도메인 부분은 .com이 아니라 .io로 해야 합니다. < MY GitHub ID >.github.io
+- GitHub에서 직접 저장소를 만들었다면 clone해서 local에서 작업하고 push합니다.
+- 처음부터 저장소를 local에 만들었다면 그대로 push합니다. (추천)
+- 이 저장소는 GitHub에서 정적 호스팅을 하기 위해서는 반드시 필요한 저장소입니다.
+- 이후 다른 이름의 저장소도 페이지로 사용할 수 있습니다. 단, 페이지로 사용할 저장소가 있다면 설정에서 페이지를 활성화해야합니다.
+- 기본 저장소는 https://.github.io로 외부에서 접속할 수 있습니다.
+- 일반 페이지 저장소는 https://.github.io/으로 접속합니다.
+- 직접 구매한 도메인이 있다면 연결도 가능합니다.
+---
+## 2. 기본 저장서 생성 및 접속속
+- 본인 계정으로 접속하면 초록색의 New 버튼을 클릭하고 기본 저장소를 public으로 생성
+- 저장소를 생성하면 간단한 index.html을 만들고 브라우저로 접속
+- GitHub에서 파일을 만들려면, "create a new file"링크를 클릭
+- 작성이 끝나면 커밋을 하고 잠시 후에 브라우저로 접속
+## 3. 배포할 프로젝트 저장소 생성
+- Working directory에 프로젝트를 새로 만들고, README.md를 간단히 수정합니다.
+- 프로젝트를 GitHub로 push합니다. 저장소는 public으로 해야 합니다.
+- GitHub에서 프로젝트 저장소에서 Settings> Pages의 None를 클릭합니다.
+- Select branch에서 main(master)를 선택하고, 저장(Save) 합니다.
+- 1~2분 후에 .github.io/으로 접속하면 readme를 확인할 수 있습니다.
+- 현재는 프로젝트를 build하기 전이기 때문에 readme만 확인할 수 있습니다.
+## 4. 프로젝트의 배포 준비
+- 프로젝트의 Shell에서 다음 명령으로 GitHub Page라이브러리를 설치합니다. npm i gh-pages
+- package.json 파일을 다음과 homepage를 추가 합니다.
+```
+{
+"homepage": "https://<username>.github.io/crepository>",
+"name": "project-name"
+"version" : "8.1.8",
+```
+- package.json의 scripts에 다음을 추가 합니다. ("predeploy": "npm rum build", "deploy": "gh-pages -d build"):그리고 commit과 push를 합니다
+## 5. 프로젝트의 배포
+- App.js를 간단히 수정합니다.
+- npm run deploy 명령을 실행합니다.
+- 깃허브의 Settings pages의 Branch를 gh-pages로 바꿔줍니다.
+- 1~2분 후에 접속을 시도해 봅니다.
 ## 2025-05-29(13주차)
 ### 5-2. 처음부터 React 앱 만들기
 2. 스트리밍 서버 측 렌더링 (SSR)은 서버에서 페이지를 렌더링하고 완전히 렌더링된 페이지를 클라이언트로 전송합니다.
